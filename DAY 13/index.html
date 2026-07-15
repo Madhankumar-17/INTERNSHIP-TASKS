@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Expense Tracker</h1>
+
+<input type="text" id="title" placeholder="Title">
+<input type="number" id="amount" placeholder="Amount">
+
+<select id="category">
+    <option>Food</option>
+    <option>Travel</option>
+    <option>Shopping</option>
+</select>
+
+<button onclick="addExpense()">Add Expense</button>
+
+<h2>Expenses</h2>
+<ul id="list"></ul>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

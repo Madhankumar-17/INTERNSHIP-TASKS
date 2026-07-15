@@ -1,0 +1,35 @@
+body{
+    font-family: Arial;
+    background:yellow;
+    text-align:center;
+    padding:30px;
+}
+
+input{
+    padding:10px;
+    margin:10px;
+    width:220px;
+}
+
+button{
+    padding:10px 20px;
+    background:blueviolet;
+    color:blue;
+    border:none;
+    cursor:pointer;
+}
+
+button:hover{
+    background:greenyellow;
+}
+
+ul{
+    list-style: blue;
+}
+
+li{
+    background:chocolate;
+    margin:10px auto;
+    width:300px;
+    padding:10px;
+}
