@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traffic IQ Prediction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow-y:auto;
+    overflow-x:hidden;
+    position:relative;
+    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1b2735);
+    background-size:400% 400%;
+    animation:gradientMove 15s ease infinite;
+    padding:30px 20px;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    width:95%;
+    max-width:700px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+    animation:fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+h2{
+    text-align:center;
+    color:#fff;
+    margin-bottom:20px;
+    font-size:24px;
+    font-weight:600;
+}
+
+.input-group{
+    margin-bottom:12px;
+}
+
+input{
+    width:100%;
+    padding:12px 14px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.18);
+    color:#fff;
+    font-size:14px;
+    transition:0.3s;
+}
+
+input::placeholder{
+    color:#ddd;
+}
+
+input:focus{
+    background:rgba(255,255,255,0.25);
+    box-shadow:0 0 0 3px rgba(0,123,255,.35);
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:10px;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(0,114,255,.4);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.result{
+    margin-top:25px;
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    background:#d4edda;
+    border:2px solid #28a745;
+    color:#155724;
+    font-weight:bold;
+    font-size:20px;
+    animation:fadeIn .6s ease;
+}
+.result h3{
+    color:#155724;font-size:20px;
+    font-weight:600;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    color:#ddd;
+    font-size:13px;
+}
+/* Moving Glow */
+body::before,
+body::after{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:.5;
+    animation:blobMove 12s ease-in-out infinite alternate;
+}
+
+body::before{
+    background:#00c6ff;
+    top:-120px;
+    left:-120px;
+}
+
+body::after{
+    background:#ff0080;
+    bottom:-120px;
+    right:-120px;
+    animation-duration:16s;
+}
+
+@keyframes blobMove{
+    from{
+        transform:translate(0,0) scale(1);
+    }
+    to{
+        transform:translate(100px,70px) scale(1.3);
+    }
+}
+
+.particle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    opacity:.5;
+    animation:floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-100px);
+    }
+}
+
+.container{
+    z-index:10;
+}
+.history{
+    margin-top:25px;
+    color:white;
+}
+
+.history h3{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:rgba(255,255,255,.1);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+th{
+    background:#0072ff;
+    color:white;
+    padding:10px;
+}
+
+td{
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+th,td{
+    border:1px solid rgba(255,255,255,.2);
+}
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.card{
+    background:rgba(255,255,255,0.15);
+    border-radius:15px;
+    padding:15px;
+    text-align:center;
+    color:white;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card h3{
+    font-size:16px;
+    margin-bottom:8px;
+}
+
+.card p{
+    font-size:24px;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="particle" style="left:10%;animation-duration:12s;"></div>
+<div class="particle" style="left:20%;animation-duration:15s;"></div>
+<div class="particle" style="left:35%;animation-duration:10s;"></div>
+<div class="particle" style="left:50%;animation-duration:18s;"></div>
+<div class="particle" style="left:65%;animation-duration:14s;"></div>
+<div class="particle" style="left:80%;animation-duration:20s;"></div>
+<div class="particle" style="left:90%;animation-duration:16s;"></div>
+
+<div class="container">
+
+    <h2>🚦 Traffic IQ Prediction</h2>
+    <div class="dashboard">
+
+    <div class="card">
+        <h3>Total Predictions</h3>
+        <p>{{ total }}</p>
+    </div>
+
+    <div class="card">
+        <h3>High Traffic</h3>
+        <p>{{ high }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Low Traffic</h3>
+        <p>{{ low }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Latest Prediction</h3>
+        <p>{{ latest }}</p>
+    </div>
+
+</div>
+    <a href="/history">
+    <button type="button" style="margin-top:10px;background:#28a745;">
+        View Prediction History
+    </button>
+    </a>
+
+    <form action="/predict" method="POST">
+
+        <div class="input-group">
+            <input type="number" step="any" name="location_id" placeholder="Location ID" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="traffic_volume" placeholder="Traffic Volume" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="avg_vehicle_speed" placeholder="Average Vehicle Speed" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="vehicle_count_cars" placeholder="Vehicle Count Cars" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="vehicle_count_trucks" placeholder="Vehicle Count Trucks" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="vehicle_count_bikes" placeholder="Vehicle Count Bikes" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="temperature" placeholder="Temperature (°C)" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" step="any" name="humidity" placeholder="Humidity (%)" required>
+        </div>
+
+        <button type="submit">
+            Predict Traffic IQ
+        </button>
+
+        </form>
+
+    {% if prediction_text %}
+    <div class="result">
+        <h3>{{ prediction_text }}</h3>
+    </div>
+    {% endif %}
+    {% if history %}
+<div class="history">
+    <h3>Prediction History</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Traffic</th>
+                <th>Speed</th>
+                <th>Prediction</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for row in history %}
+            <tr>
+                <td>{{ row.location }}</td>
+                <td>{{ row.traffic }}</td>
+                <td>{{ row.speed }}</td>
+                <td>{{ row.prediction }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endif %}
+
+    <div class="history">
+    <h3>Traffic Analytics</h3>
+
+    <img src="{{ url_for('static', filename='charts/pie_chart.png') }}"
+         width="350"
+         style="display:block;margin:auto;border-radius:15px;">
+</div>
+<div class="footer">
+        Smart Traffic Monitoring System
+    </div>
+
+</div>
+
+</body>
+</html>
